@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for card in game.river %}
+    <p>{{ card.identifier }}</p>
+  {% endfor %}
+
+  {% for player in game.players %}
+    <hr/>
+    <h2>{{ player.name }}</h2>
+    {% for card in player.hand %}
+      <p>{{ card.identifier }}</p>
+    {% endfor %}
+  {% endfor %}
+
+{% endblock %}
