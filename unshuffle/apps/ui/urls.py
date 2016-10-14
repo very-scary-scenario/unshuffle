@@ -4,5 +4,5 @@ from .views import GameView
 
 
 urlpatterns = [
-    url(r'^game/$', GameView.as_view())
+    url(r'^game/(?P<name>[^/]+)/$', GameView.as_view())
 ]

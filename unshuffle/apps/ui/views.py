@@ -1,16 +1,12 @@
-import os
-
 from camel import Camel
 from classtools import reify
 
 from django.views.generic import FormView
 
 from .forms import GameForm
+from .models import Game as GameStore
 from ..game import reg, Game, Player
 from ..sources import veekun
-
-
-GAMEFILE = 'game.yaml'
 
 
 class GameView(FormView):
@@ -30,26 +26,28 @@ class GameView(FormView):
 
     @reify
     def game(self):
-        if not os.path.exists(GAMEFILE):
-            print('making a new game')
+        game_store, created = GameStore.objects.get_or_create(
+            name=self.kwargs['name'],
+        )
+
+        if created:
             game = Game.new(veekun.load(),
                             'identifier', 'identifier', [Player.new()])
 
-            with open(GAMEFILE, 'w') as gf:
-                gf.write(Camel([reg]).dump(game))
+            game_store.state = Camel([reg]).dump(game)
+            game_store.save()
+            return game
 
-        with open(GAMEFILE) as gf:
-            return Camel([reg]).load(gf.read())
+        return Camel([reg]).load(game_store.state)
 
     def form_valid(self, form):
-        correct = self.game.play(
+        self.game.play(
             self.player, form.cleaned_data['card'], form.cleaned_data['index'],
         )
 
-        print('correct: {}'.format(correct))
-
-        with open(GAMEFILE, 'w') as gf:
-            gf.write(Camel([reg]).dump(self.game))
+        GameStore.objects.filter(name=self.kwargs['name']).update(
+            state=Camel([reg]).dump(self.game)
+        )
 
         return super().form_valid(form)
 
