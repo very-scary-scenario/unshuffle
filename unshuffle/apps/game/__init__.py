@@ -55,7 +55,7 @@ class Game(Loadable):
 
     def play(self, player, hand_index, river_index):
         self.river.insert(river_index, player.hand.pop(hand_index))
-        frame = self.river[max(0, river_index-1):river_index+1]
+        frame = self.river[max(0, river_index-1):river_index+2]
         print(frame)
 
         previous_card = frame[0]
