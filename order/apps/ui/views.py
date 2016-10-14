@@ -10,24 +10,51 @@ from ..game import reg, Game, Player
 from ..sources import veekun
 
 
+GAMEFILE = 'game.yaml'
+
+
 class GameView(FormView):
     form_class = GameForm
     template_name = 'game.html'
+    success_url = '.'
+
+    def get_form(self, *a, **k):
+        form = super().get_form(*a, **k)
+        form.game = self.game
+        form.player = self.player
+        return form
+
+    @reify
+    def player(self):
+        return self.game.players[0]
 
     @reify
     def game(self):
-        if not os.path.exists('game.yml'):
+        if not os.path.exists(GAMEFILE):
+            print('making a new game')
             game = Game.new(veekun.load(),
-                            'species_id', 'identifier', [Player.new()])
+                            'identifier', 'identifier', [Player.new()])
 
-            with open('game.yaml', 'w') as gf:
+            with open(GAMEFILE, 'w') as gf:
                 gf.write(Camel([reg]).dump(game))
 
-        with open('game.yaml') as gf:
+        with open(GAMEFILE) as gf:
             return Camel([reg]).load(gf.read())
 
-    def get_context_data(self):
+    def form_valid(self, form):
+        correct = self.game.play(
+            self.player, form.cleaned_data['card'], form.cleaned_data['index'],
+        )
+
+        print('correct: {}'.format(correct))
+
+        with open(GAMEFILE, 'w') as gf:
+            gf.write(Camel([reg]).dump(self.game))
+
+        return super().form_valid(form)
+
+    def get_context_data(self, *a, **k):
         return {
-            **super().get_context_data(),
+            **super().get_context_data(*a, **k),
             'game': self.game,
         }

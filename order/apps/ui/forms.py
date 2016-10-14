@@ -2,5 +2,21 @@ from django import forms
 
 
 class GameForm(forms.Form):
-    card_id = forms.CharField()
-    index = forms.IntegerField()
+    card = forms.IntegerField(min_value=0)
+    index = forms.IntegerField(min_value=0)
+
+    def clean_index(self):
+        index = self.cleaned_data['index']
+
+        if not (0 <= index <= len(self.game.river)):
+            raise forms.ValidationError('invalid index')
+
+        return index
+
+    def clean_card(self):
+        index = self.cleaned_data['card']
+
+        if not (0 <= index <= len(self.player.hand)):
+            raise forms.ValidationError('invalid index')
+
+        return index

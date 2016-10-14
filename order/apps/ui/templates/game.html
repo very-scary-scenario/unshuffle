@@ -1,16 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <p><em>0</em></p>
+
   {% for card in game.river %}
     <p>{{ card.identifier }}</p>
+    <p><em>{{ forloop.counter }}</em></p>
   {% endfor %}
 
   {% for player in game.players %}
     <hr/>
     <h2>{{ player.name }}</h2>
     {% for card in player.hand %}
-      <p>{{ card.identifier }}</p>
+      <p><strong>{{ forloop.counter0 }}</strong> {{ card.identifier }}</p>
     {% endfor %}
   {% endfor %}
+
+  <form method="post">
+    {% csrf_token %}
+    <ul>
+      {{ form.as_ul }}
+    </ul>
+    <input type="submit"/>
+  </form>
 
 {% endblock %}
