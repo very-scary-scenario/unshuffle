@@ -1,4 +1,5 @@
 django==1.10.2
 classtools==0.1
 camel==0.1
+django-pipeline==1.6.9
 -e git+https://github.com/veekun/pokedex.git@yaml#egg=dex-yaml
