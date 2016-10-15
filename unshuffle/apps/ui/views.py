@@ -1,6 +1,7 @@
 from camel import Camel
 from classtools import reify
 
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, FormView
@@ -26,6 +27,16 @@ class StartGameView(FormView):
         game = camel.load(game_store.state) or Game(players=[])
 
         if not game.started:
+            if form.cleaned_data['your_name'] in (
+                p.name for p in game.players
+            ):
+                messages.warning(
+                    self.request,
+                    'a player by the name {!r} is already in this game'
+                    .format(form.cleaned_data['your_name']),
+                )
+                return redirect(reverse('index'))
+
             game.players.append(Player.new(form.cleaned_data['your_name']))
             game_store.state = camel.dump(game)
             game_store.save()
@@ -109,9 +120,13 @@ class GameView(GameMixin, FormView):
         return form
 
     def form_valid(self, form):
-        self.game.play(
+        if self.game.play(
             self.player, form.cleaned_data['card'], form.cleaned_data['index'],
-        )
+        ):
+            messages.success(self.request, 'correct!')
+        else:
+            messages.error(self.request, 'incorrect')
+
         self.save_game()
 
         return super().form_valid(form)
