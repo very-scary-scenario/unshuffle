@@ -6,24 +6,29 @@
   <form method="post">
     {% csrf_token %}
 
-    <input type="radio" name="index" value="0"/>
+    {% if player %}<input type="radio" name="index" value="0"/>{% endif %}
 
     {% for card in game.river %}
       <p>{{ card.title }}</p>
-      <input type="radio" name="index" value="{{ forloop.counter }}"/>
+      {% if player %}<input type="radio" name="index" value="{{ forloop.counter }}"/>{% endif %}
     {% endfor %}
 
     <hr/>
-    <h2>{{ player.name }}</h2>
 
-    {% for card in player.hand %}
-      <p>
-        <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-        <label for="card-{{ forloop.counter0 }}">{{ card.title }}</label>
-      </p>
-    {% endfor %}
+    {% if player %}
+      <h2>{{ player.name }}</h2>
 
-    <input type="submit"/>
+      {% for card in player.hand %}
+        <p>
+          <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
+          <label for="card-{{ forloop.counter0 }}">{{ card.title }}</label>
+        </p>
+      {% endfor %}
+
+      <input type="submit"/>
+    {% else %}
+      <p>you are spectating</p>
+    {% endif %}
   </form>
 
   <ul>

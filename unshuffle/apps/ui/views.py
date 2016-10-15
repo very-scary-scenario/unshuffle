@@ -44,8 +44,12 @@ class GameMixin(object):
 
     @reify
     def player(self):
-        player, = (p for p in self.game.players if self.player_name == p.name)
-        return player
+        players = [p for p in self.game.players if self.player_name == p.name]
+
+        if len(players) != 1:
+            return None
+
+        return players[0]
 
     def save_game(self):
         self.game._store.state = camel.dump(self.game)
