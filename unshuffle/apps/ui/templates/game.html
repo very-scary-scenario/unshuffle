@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <h1>{{ game.deck_name }}</h1>
+
   <form method="post">
     {% csrf_token %}
 
@@ -11,19 +13,22 @@
       <input type="radio" name="index" value="{{ forloop.counter }}"/>
     {% endfor %}
 
-    {% for player in game.players %}
-      <hr/>
-      <h2>{{ player.name }}</h2>
-      {% for card in player.hand %}
-        
-        <p>
-          <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-          <label for="card-{{ forloop.counter0 }}">{{ card.title }}</label>
-        </p>
+    <hr/>
+    <h2>{{ player.name }}</h2>
 
-      {% endfor %}
+    {% for card in player.hand %}
+      <p>
+        <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
+        <label for="card-{{ forloop.counter0 }}">{{ card.title }}</label>
+      </p>
     {% endfor %}
 
     <input type="submit"/>
   </form>
+
+  <ul>
+    {% for player in game.players %}
+      <li><strong>{{ player.name }}</strong> has {{ player.hand|length }} cards</li>
+    {% endfor %}
+  </ul>
 {% endblock %}

@@ -62,6 +62,7 @@ class GameMixin(object):
         return {
             **super().get_context_data(*a, **k),
             'game': self.game,
+            'player': self.player,
         }
 
 
@@ -71,7 +72,7 @@ class ConfigureGameView(GameMixin, FormView):
     success_url = '.'
 
     def form_valid(self, form):
-        self.game.start(SOURCES[form.cleaned_data['deck']]())
+        self.game.start(SOURCES[form.cleaned_data['deck']])
         self.save_game()
         return super().form_valid(form)
 

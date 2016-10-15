@@ -23,7 +23,7 @@ class Loadable(object):
 
 
 class Game(Loadable):
-    persistent_attrs = {'river', 'deck', 'players'}
+    persistent_attrs = {'river', 'deck_name', 'deck', 'players'}
 
     @classmethod
     def new(cls, *a, **k):
@@ -35,10 +35,11 @@ class Game(Loadable):
     def started(self):
         return bool(self.deck)
 
-    def start(self, objects, players=None):
+    def start(self, source, players=None):
         self.base_hand_size = 3
 
-        self.deck = list(objects)
+        self.deck_name = source.deck_name
+        self.deck = list(source())
         shuffle(self.deck)
 
         self.players = players or self.players or None
