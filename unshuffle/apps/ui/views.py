@@ -78,6 +78,7 @@ class GameMixin(object):
             **super().get_context_data(*a, **k),
             'game': self.game,
             'player': self.player,
+            'game_name': self.kwargs['name'],
         }
 
 
