@@ -23,13 +23,9 @@ class Loadable(object):
 
 
 class Game(Loadable):
-    persistent_attrs = {'river', 'deck_name', 'deck', 'players'}
-
-    @classmethod
-    def new(cls, *a, **k):
-        game = cls()
-        game.start(*a, **k)
-        return game
+    persistent_attrs = {
+        'river', 'deck_name', 'deck', 'players', 'round', 'turn',
+    }
 
     @property
     def started(self):
@@ -67,7 +63,6 @@ class Game(Loadable):
     def play(self, player, hand_index, river_index):
         self.river.insert(river_index, player.hand.pop(hand_index))
         frame = self.river[max(0, river_index-1):river_index+2]
-        print(frame)
 
         previous_card = frame[0]
         for card in frame[1:]:
