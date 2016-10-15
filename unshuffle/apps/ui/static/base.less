@@ -1,3 +1,84 @@
+@card-width: 10em;
+@card-height: 5em;
+@card-padding: 1em;
+@highlight: #aaf;
+
 body {
-  background-color: #ccc;
+  max-width: 50em;
+  margin: 0 auto;
+  padding: 0 1em;
+  background-color: #ddd;
+}
+
+h2 {
+  text-align: center;
+  margin: 1em 0 0;
+}
+
+.river, .hand {
+  display: block;
+  position: relative;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+
+  .choice-group {
+    display: inline;
+  }
+}
+
+.card-spacing {
+  vertical-align: top;
+  display: inline-block;
+  position: relative;
+  top: 1em;
+  width: @card-width;
+  height: @card-height;
+  padding: @card-padding;
+  margin: .5em .5em 2em;
+}
+
+.card {
+  .card-spacing;
+  background-color: white;
+  border-radius: @card-padding;
+
+  h3 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.hand {
+  input[type="radio"] {
+    display: none;
+    &:checked ~ label .card {
+      top: 0;
+      background-color: @highlight;
+    }
+  }
+}
+
+.river {
+  input[type="radio"] {
+    display: none;
+
+    ~ label {
+      .card-spacing;
+      border-radius: @card-padding;
+      right: @card-width/2 + 1em;
+      top: 2em;
+      margin-right: -(@card-width + 2.7em);
+      z-index: 1;
+      opacity: 0;
+      background-color: @highlight;
+    }
+
+    &:checked ~ label {
+      opacity: 0.5;
+    }
+  }
 }

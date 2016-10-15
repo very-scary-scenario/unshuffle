@@ -6,24 +6,45 @@
   <form method="post">
     {% csrf_token %}
 
-    {% if player %}<input type="radio" name="index" value="0"/>{% endif %}
+    <h2>river</h2>
+    <div class="river">
+      <div class="choice-group">
+        {% if player %}
+          <input type="radio" name="index" value="0" id="slot-0">
+          <label for="slot-0"></label>
+        {% endif %}
+      </div>
 
-    {% for card in game.river %}
-      <p><strong>{{ card.title }}</strong> {{ card.order }}</p>
-      {% if player %}<input type="radio" name="index" value="{{ forloop.counter }}"/>{% endif %}
-    {% endfor %}
+      {% for card in game.river %}
+        <div class="choice-group">
+          <div class="card">
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.order }}</p>
+          </div>
 
-    <hr/>
+          {% if player %}
+            <input type="radio" name="index" value="{{ forloop.counter }}" id="slot-{{ forloop.counter }}"/>
+            <label for="slot-{{ forloop.counter }}"></label>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
 
     {% if player %}
-      <h2>{{ player.name }}</h2>
+      <h2>pick a card to play</h2>
 
-      {% for card in player.hand %}
-        <p>
-          <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-          <label for="card-{{ forloop.counter0 }}"><strong>{{ card.title }}</strong></label>
-        </p>
-      {% endfor %}
+      <div class="hand">
+        {% for card in player.hand %}
+          <div class="choice-group">
+            <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
+            <label for="card-{{ forloop.counter0 }}">
+              <div class="card">
+                <h3>{{ card.title }}</h3>
+              </div>
+            </label>
+          </div>
+        {% endfor %}
+      </div>
 
       <input type="submit"/>
     {% else %}
