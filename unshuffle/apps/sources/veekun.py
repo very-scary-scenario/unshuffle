@@ -5,19 +5,18 @@ import pokedex
 from ..sources import source
 
 
-MONS_CSV = os.path.join(
+NAMES_CSV = os.path.join(
     os.path.dirname(pokedex.__file__),
-    'data', 'csv', 'pokemon.csv',
+    'data', 'csv', 'pokemon_species_names.csv',
 )
 
 
 def _pokemon():
     ints = {
-        'species_id', 'is_default', 'id', 'height', 'base_experience',
-        'weight', 'order',
+        'pokemon_species_id', 'local_language_id',
     }
 
-    with open(MONS_CSV) as pf:
+    with open(NAMES_CSV) as pf:
         reader = csv.DictReader(pf)
         for mon in reader:
             yield {
@@ -26,19 +25,34 @@ def _pokemon():
             }
 
 
+def _english_pokemon():
+    for mon in _pokemon():
+        if mon['local_language_id'] == 9:
+            yield mon
+
+
 @source('Veekun: Pokémon by name (alphabetical)')
 def pokemon_by_name():
-    for mon in _pokemon():
+    for mon in _english_pokemon():
         yield {
-            'title': mon['identifier'],
-            'order': mon['identifier'],
+            'title': mon['name'],
+            'order': mon['name'],
         }
 
 
 @source('Veekun: Pokémon by national Pokédex number')
 def pokemon_by_national_dex():
-    for mon in _pokemon():
+    for mon in _english_pokemon():
         yield {
-            'title': mon['identifier'],
-            'order': mon['species_id'],
+            'title': mon['name'],
+            'order': mon['pokemon_species_id'],
+        }
+
+
+@source('Veekun: Pokémon by genus (alphabetical)')
+def pokemon_by_genus():
+    for mon in _english_pokemon():
+        yield {
+            'title': mon['name'],
+            'order': '{} Pokémon'.format(mon['genus']),
         }

@@ -9,7 +9,7 @@
     {% if player %}<input type="radio" name="index" value="0"/>{% endif %}
 
     {% for card in game.river %}
-      <p>{{ card.title }}</p>
+      <p><strong>{{ card.title }}</strong> {{ card.order }}</p>
       {% if player %}<input type="radio" name="index" value="{{ forloop.counter }}"/>{% endif %}
     {% endfor %}
 
@@ -21,7 +21,7 @@
       {% for card in player.hand %}
         <p>
           <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-          <label for="card-{{ forloop.counter0 }}">{{ card.title }}</label>
+          <label for="card-{{ forloop.counter0 }}"><strong>{{ card.title }}</strong></label>
         </p>
       {% endfor %}
 
