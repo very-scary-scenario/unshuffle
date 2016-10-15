@@ -65,6 +65,8 @@ class Game(Loadable):
         for i in range(self.initial_river_size):
             self.river.append(self.next_card())
 
+        self.sort_river()
+
     def play(self, player, hand_index, river_index):
         self.river.insert(river_index, player.hand.pop(hand_index))
         frame = self.river[max(0, river_index-1):river_index+2]
