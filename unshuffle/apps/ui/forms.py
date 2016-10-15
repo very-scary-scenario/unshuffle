@@ -12,6 +12,12 @@ class ConfigureGameForm(forms.Form):
     deck = forms.ChoiceField(choices=list(sorted((
         (k, k) for k in SOURCES.keys()
     ))))
+    base_hand_size = forms.IntegerField(
+        initial=3, min_value=1, max_value=10,
+    )
+    initial_river_size = forms.IntegerField(
+        initial=1, min_value=1, max_value=10,
+    )
 
 
 class GameForm(forms.Form):

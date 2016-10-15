@@ -87,7 +87,11 @@ class ConfigureGameView(GameMixin, FormView):
     success_url = '.'
 
     def form_valid(self, form):
-        self.game.start(SOURCES[form.cleaned_data['deck']])
+        self.game.start(
+            SOURCES[form.cleaned_data['deck']],
+            base_hand_size=form.cleaned_data['base_hand_size'],
+            initial_river_size=form.cleaned_data['initial_river_size'],
+        )
         self.save_game()
         return super().form_valid(form)
 

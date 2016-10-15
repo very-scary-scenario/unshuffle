@@ -25,17 +25,21 @@ class Loadable(object):
 class Game(Loadable):
     persistent_attrs = {
         'river', 'deck_name', 'deck', 'players', 'round', 'turn',
+        'base_hand_size', 'initial_river_size',
     }
 
     @property
     def started(self):
         return bool(self.deck)
 
-    def start(self, source, players=None):
-        self.base_hand_size = 3
+    def start(self, source, players=None,
+              base_hand_size=3, initial_river_size=1):
+        self.base_hand_size = base_hand_size
+        self.initial_river_size = initial_river_size
 
         self.deck_name = source.deck_name
         self.deck = list(source())
+
         shuffle(self.deck)
 
         self.players = players or self.players or None
@@ -58,7 +62,8 @@ class Game(Loadable):
             for player in self.players:
                 player.hand.append(self.next_card())
 
-        self.river.append(self.next_card())
+        for i in range(self.initial_river_size):
+            self.river.append(self.next_card())
 
     def play(self, player, hand_index, river_index):
         self.river.insert(river_index, player.hand.pop(hand_index))

@@ -33,3 +33,12 @@ def pokemon_by_name():
             'title': mon['identifier'],
             'order': mon['identifier'],
         }
+
+
+@source('Veekun: Pokémon by national Pokédex number')
+def pokemon_by_national_dex():
+    for mon in _pokemon():
+        yield {
+            'title': mon['identifier'],
+            'order': mon['species_id'],
+        }
