@@ -1,5 +1,18 @@
 from django import forms
 
+from ..sources import SOURCES
+
+
+class JoinGameForm(forms.Form):
+    your_name = forms.CharField()
+    game_name = forms.SlugField()
+
+
+class ConfigureGameForm(forms.Form):
+    deck = forms.ChoiceField(choices=list(sorted((
+        (k, k) for k in SOURCES.keys()
+    ))))
+
 
 class GameForm(forms.Form):
     card = forms.IntegerField(min_value=0)

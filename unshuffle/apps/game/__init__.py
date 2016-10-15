@@ -9,9 +9,12 @@ class Loadable(object):
     def __init__(self, **attrs):
         super().__init__()
 
+        for attr in self.persistent_attrs:
+            setattr(self, attr, None)
+
         for k, v in attrs.items():
             if k not in self.persistent_attrs:
-                raise ValueError('{} is not persistent, ignoring'.format(k))
+                raise ValueError('{} is not persistent'.format(k))
 
             setattr(self, k, v)
 
@@ -20,26 +23,33 @@ class Loadable(object):
 
 
 class Game(Loadable):
-    persistent_attrs = {'river', 'deck', 'sort_by', 'title_by', 'players'}
+    persistent_attrs = {'river', 'deck', 'players'}
 
     @classmethod
-    def new(cls, objects, sort_by, title_by, players):
+    def new(cls, *a, **k):
         game = cls()
-
-        game.base_hand_size = 3
-
-        game.deck = list(objects)
-        shuffle(game.deck)
-
-        game.sort_by = sort_by
-        game.title_by = title_by
-        game.players = players
-        game.deal()
-
+        game.start(*a, **k)
         return game
 
+    @property
+    def started(self):
+        return bool(self.deck)
+
+    def start(self, objects, players=None):
+        self.base_hand_size = 3
+
+        self.deck = list(objects)
+        shuffle(self.deck)
+
+        self.players = players or self.players or None
+
+        if self.players is None:
+            raise ValueError('game started with no players')
+
+        self.deal()
+
     def sort_river(self):
-        self.river.sort(key=lambda o: o[self.sort_by])
+        self.river.sort(key=lambda o: o['order'])
 
     def next_card(self):
         return self.deck.pop()
@@ -60,7 +70,7 @@ class Game(Loadable):
 
         previous_card = frame[0]
         for card in frame[1:]:
-            if card[self.sort_by] < previous_card[self.sort_by]:
+            if card['order'] < previous_card['order']:
                 correct = False
                 player.hand.append(self.next_card())
                 self.sort_river()
@@ -80,10 +90,10 @@ class Player(Loadable):
     persistent_attrs = {'hand', 'name'}
 
     @classmethod
-    def new(cls):
+    def new(cls, name):
         player = cls()
 
-        player.name = 'colons'
+        player.name = name
         player.hand = []
 
         return player

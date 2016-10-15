@@ -7,7 +7,7 @@
     <input type="radio" name="index" value="0"/>
 
     {% for card in game.river %}
-      <p>{{ card.identifier }}</p>
+      <p>{{ card.title }}</p>
       <input type="radio" name="index" value="{{ forloop.counter }}"/>
     {% endfor %}
 
@@ -18,7 +18,7 @@
         
         <p>
           <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-          <label for="card-{{ forloop.counter0 }}">{{ card.identifier }}</label>
+          <label for="card-{{ forloop.counter0 }}">{{ card.title }}</label>
         </p>
 
       {% endfor %}
@@ -26,5 +26,4 @@
 
     <input type="submit"/>
   </form>
-
 {% endblock %}

@@ -2,6 +2,7 @@ import csv
 import os
 
 import pokedex
+from ..sources import source
 
 
 MONS_CSV = os.path.join(
@@ -10,7 +11,7 @@ MONS_CSV = os.path.join(
 )
 
 
-def load():
+def _pokemon():
     ints = {
         'species_id', 'is_default', 'id', 'height', 'base_experience',
         'weight', 'order',
@@ -23,3 +24,12 @@ def load():
                 k: int(v) if k in ints else v
                 for k, v in mon.items()
             }
+
+
+@source('Veekun: Pokémon by name (alphabetical)')
+def pokemon_by_name():
+    for mon in _pokemon():
+        yield {
+            'title': mon['identifier'],
+            'order': mon['identifier'],
+        }
