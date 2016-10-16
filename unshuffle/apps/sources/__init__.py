@@ -12,4 +12,5 @@ def source(name):
 from ..sources import (  # noqa
     giantbomb,
     veekun,
+    wikipedia,
 )
