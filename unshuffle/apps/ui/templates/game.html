@@ -70,4 +70,18 @@
       <li><strong>{{ player.name }}</strong> has {{ player.hand|length }} cards</li>
     {% endfor %}
   </ul>
+
+  {% if game.discard_pile %}
+    <h2>discard pile</h2>
+    <div class="discard-pile">
+      {% for card in game.discard_pile reversed %}
+        <div class="card">
+          <h3>{{ card.title }}</h3>
+          <p><em>{% firstof card.order_display card.order %}</em></p>
+          {% if card.description %}{{ card.description|linebreaks }}{% endif %}
+          {% if card.secret_description %}{{ card.secret_description|linebreaks }}{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endblock %}

@@ -24,7 +24,8 @@ class Loadable(object):
 
 class Game(Loadable):
     persistent_attrs = {
-        'river', 'deck_name', 'deck', 'players', 'round', 'turn',
+        'river', 'discard_pile', 'deck_name', 'deck', 'players',
+        'round', 'turn',
         'base_hand_size', 'initial_river_size', 'discard_incorrect_plays',
     }
 
@@ -44,6 +45,7 @@ class Game(Loadable):
 
         self.deck_name = source.deck_name
         self.deck = list(source())
+        self.discard_pile = []
 
         shuffle(self.deck)
 
@@ -83,7 +85,7 @@ class Game(Loadable):
                 player.hand.append(self.next_card())
 
                 if self.discard_incorrect_plays:
-                    self.river.pop(river_index)
+                    self.discard_pile.append(self.river.pop(river_index))
                 else:
                     self.sort_river()
 
