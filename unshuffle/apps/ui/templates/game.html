@@ -16,7 +16,7 @@
             <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
             <label for="card-{{ forloop.counter0 }}">
               <div class="card">
-                <h3>{{ card.title }}</h3>
+                {% if card.title %}<h3>{{ card.title }}</h3>{% endif %}
                 {% if card.description %}{{ card.description|linebreaks }}{% endif %}
               </div>
             </label>
@@ -46,7 +46,7 @@
       {% for card in game.river %}
         <div class="choice-group">
           <div class="card">
-            <h3>{{ card.title }}</h3>
+            {% if card.title %}<h3>{{ card.title }}</h3>{% endif %}
             <p><em>{% firstof card.order_display card.order %}</em></p>
             {% if card.description %}{{ card.description|linebreaks }}{% endif %}
             {% if card.secret_description %}{{ card.secret_description|linebreaks }}{% endif %}
@@ -76,7 +76,7 @@
     <div class="discard-pile">
       {% for card in game.discard_pile reversed %}
         <div class="card">
-          <h3>{{ card.title }}</h3>
+          {% if card.title %}<h3>{{ card.title }}</h3>{% endif %}
           <p><em>{% firstof card.order_display card.order %}</em></p>
           {% if card.description %}{{ card.description|linebreaks }}{% endif %}
           {% if card.secret_description %}{{ card.secret_description|linebreaks }}{% endif %}
