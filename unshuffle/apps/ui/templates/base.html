@@ -8,6 +8,7 @@
     {% stylesheet "base" %}
   </head>
   <body>
+    {% block heading %}<h1>unshuffle</h1>{% endblock %}
 
     {% if messages %}
       <ul class="messages">
@@ -19,7 +20,6 @@
       </ul>
     {% endif %}
 
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
   </body>
 </html>

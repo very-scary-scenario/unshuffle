@@ -1,12 +1,39 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block heading %}
   <h1>{{ game.deck_name }}</h1>
+{% endblock %}
 
+{% block content %}
   <form method="post">
     {% csrf_token %}
 
-    <h2>river</h2>
+    {% if player %}
+      <h2>pick a card from your hand</h2>
+      <div class="hand">
+        {% for card in player.hand %}
+          <div class="choice-group">
+            <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
+            <label for="card-{{ forloop.counter0 }}">
+              <div class="card">
+                <h3>{{ card.title }}</h3>
+              </div>
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>you are spectating</p>
+    {% endif %}
+
+    <h2>
+      {% if player %}
+        choose where you think it belongs
+      {% else %}
+        river
+      {% endif %}
+    </h2>
+
     <div class="river">
       <div class="choice-group">
         {% if player %}
@@ -28,28 +55,11 @@
           {% endif %}
         </div>
       {% endfor %}
+
+      {% if player %}
+        <input id="play-button" type="submit" value="and play it"/>
+      {% endif %}
     </div>
-
-    {% if player %}
-      <h2>pick a card to play</h2>
-
-      <div class="hand">
-        {% for card in player.hand %}
-          <div class="choice-group">
-            <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-            <label for="card-{{ forloop.counter0 }}">
-              <div class="card">
-                <h3>{{ card.title }}</h3>
-              </div>
-            </label>
-          </div>
-        {% endfor %}
-      </div>
-
-      <input type="submit"/>
-    {% else %}
-      <p>you are spectating</p>
-    {% endif %}
   </form>
 
   <ul>
