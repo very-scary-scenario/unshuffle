@@ -8,7 +8,9 @@
     {% stylesheet "base" %}
   </head>
   <body>
-    {% block heading %}<h1>unshuffle</h1>{% endblock %}
+    <header>
+      {% block heading %}<h1>unshuffle</h1>{% endblock %}
+    </header>
 
     {% if messages %}
       <ul class="messages">

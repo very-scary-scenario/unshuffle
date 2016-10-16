@@ -46,6 +46,7 @@ def pokemon_by_national_dex():
         yield {
             'title': mon['name'],
             'order': mon['pokemon_species_id'],
+            'order_display': '#{}'.format(mon['pokemon_species_id']),
         }
 
 

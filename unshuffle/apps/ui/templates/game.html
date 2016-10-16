@@ -46,7 +46,7 @@
         <div class="choice-group">
           <div class="card">
             <h3>{{ card.title }}</h3>
-            <p>{{ card.order }}</p>
+            <p>{% firstof card.order_display card.order %}</p>
           </div>
 
           {% if player %}
@@ -62,7 +62,7 @@
     {% endif %}
   </form>
 
-  <ul>
+  <ul class="state">
     {% for player in game.players %}
       <li><strong>{{ player.name }}</strong> has {{ player.hand|length }} cards</li>
     {% endfor %}
