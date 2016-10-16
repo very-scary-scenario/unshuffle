@@ -25,17 +25,22 @@ class Loadable(object):
 class Game(Loadable):
     persistent_attrs = {
         'river', 'deck_name', 'deck', 'players', 'round', 'turn',
-        'base_hand_size', 'initial_river_size',
+        'base_hand_size', 'initial_river_size', 'discard_incorrect_plays',
     }
 
     @property
     def started(self):
         return bool(self.deck)
 
-    def start(self, source, players=None,
-              base_hand_size=3, initial_river_size=1):
+    def start(
+        self, source, players=None,
+        base_hand_size=3,
+        initial_river_size=1,
+        discard_incorrect_plays=True,
+    ):
         self.base_hand_size = base_hand_size
         self.initial_river_size = initial_river_size
+        self.discard_incorrect_plays = discard_incorrect_plays
 
         self.deck_name = source.deck_name
         self.deck = list(source())
@@ -76,7 +81,12 @@ class Game(Loadable):
             if card['order'] < previous_card['order']:
                 correct = False
                 player.hand.append(self.next_card())
-                self.sort_river()
+
+                if self.discard_incorrect_plays:
+                    self.river.pop(river_index)
+                else:
+                    self.sort_river()
+
                 break
 
             previous_card = card
