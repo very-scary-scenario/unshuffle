@@ -17,6 +17,7 @@
             <label for="card-{{ forloop.counter0 }}">
               <div class="card">
                 <h3>{{ card.title }}</h3>
+                {% if card.description %}{{ card.description|linebreaks }}{% endif %}
               </div>
             </label>
           </div>
@@ -46,7 +47,9 @@
         <div class="choice-group">
           <div class="card">
             <h3>{{ card.title }}</h3>
-            <p>{% firstof card.order_display card.order %}</p>
+            <p><em>{% firstof card.order_display card.order %}</em></p>
+            {% if card.description %}{{ card.description|linebreaks }}{% endif %}
+            {% if card.secret_description %}{{ card.secret_description|linebreaks }}{% endif %}
           </div>
 
           {% if player %}

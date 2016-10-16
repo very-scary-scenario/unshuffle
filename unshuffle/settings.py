@@ -123,3 +123,8 @@ PIPELINE = {
         'pipeline.compilers.less.LessCompiler',
     ),
 }
+
+try:
+    from unshuffle.settings_local import *  # noqa
+except ImportError:
+    pass
