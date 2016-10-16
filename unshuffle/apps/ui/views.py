@@ -30,7 +30,7 @@ class StartGameView(FormView):
             if form.cleaned_data['your_name'] in (
                 p.name for p in game.players
             ):
-                messages.warning(
+                messages.error(
                     self.request,
                     'a player by the name {!r} is already in this game'
                     .format(form.cleaned_data['your_name']),
