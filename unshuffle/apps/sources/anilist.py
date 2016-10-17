@@ -2,16 +2,14 @@ from datetime import datetime
 
 import requests
 
-from django.core.cache import cache
 from django.conf import settings
 
-from ..sources import source
+from ..sources import source, cached
 
 
 AUTH_PARAMS = {}
 URL_FMT = 'https://anilist.co/api/{}'
 SEASONS = ['winter', 'spring', 'summer', 'fall']
-SEASON_CACHE_KEY = 'anilist_seasons'
 
 
 def _anilist(method, **params):
@@ -49,9 +47,19 @@ def anilist(*a, **k):
     return resp.json()
 
 
-def populate_season_cache():
-    cards = []
+def anime_description(anime):
+    return '\n\n'.join((
+        anime['title_romaji']
+        if anime['title_romaji'] != anime['title_english']
+        else '',
 
+        ', '.join(anime['genres'])
+    ))
+
+
+@source('Anilist: Anime by season')
+@cached('anilist_seasons')
+def anime_by_season():
     for year in range(1995, datetime.now().year):
         for season_index, season in enumerate(SEASONS):
             for anime in anilist(
@@ -60,27 +68,38 @@ def populate_season_cache():
                 seaon=season,
                 sort='popularity-desc',
             ):
-                cards.append({
+                yield {
                     'title': anime['title_english'],
-                    'description': ', '.join(anime['genres']),
+                    'description': anime_description(anime),
                     'order': '{}-{}'.format(year, season_index),
                     'order_display': '{} {}'.format(
                         season.capitalize(), year,
                     ),
-                })
-
-    cache.set(SEASON_CACHE_KEY, cards)
-    return cards
+                }
 
 
-@source('Anilist: Anime by season')
-def anime_by_season():
-    cards = cache.get(SEASON_CACHE_KEY)
+@source('Anilist: Anime by user rating')
+@cached('anilist_ratings')
+def anime_by_user_rating():
+    seen = set()
 
-    if cards is None:
-        cards = populate_season_cache()
+    for page in range(1, 5):
+        for anime in anilist(
+            'browse/anime',
+            sort='popularity-desc',
+            page=page,
+        ):
+            if anime['id'] in seen:
+                raise ValueError(anime)
 
-    return cards
+            seen.add(anime['id'])
+
+            yield {
+                'title': anime['title_english'],
+                'description': anime_description(anime),
+                'order': anime['average_score'],
+                'order_display': '{:.2f}%'.format(anime['average_score']),
+            }
 
 
 # anime_by_season()  # just to populate the cache if it's not populated
