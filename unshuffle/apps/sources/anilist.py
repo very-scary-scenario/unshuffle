@@ -83,7 +83,7 @@ def anime_by_season():
 def anime_by_user_rating():
     seen = set()
 
-    for page in range(1, 5):
+    for page in range(1, 15):
         for anime in anilist(
             'browse/anime',
             sort='popularity-desc',
