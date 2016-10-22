@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>configure the game, and hit go when everyone's joined</p>
-  <p>to have someone join, tell them that the name of your game is <code>{{ game_name }}</code> and send them to this website</p>
-  <p>if you want to play solo, just pick your settings and hit go</p>
+  <form method="post" class="framed">
+    <p>configure the game, and hit go when everyone's joined</p>
+    <p>to have someone join, tell them that the name of your game is <code>{{ game_name }}</code> and send them to this website</p>
+    <p>if you want to play solo, just pick your settings and hit go</p>
 
-  <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="go"/>
+    <input class="button" type="submit" value="go"/>
   </form>
 {% endblock %}

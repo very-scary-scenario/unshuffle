@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>start or join a game</p>
-  <form method="post">
+  <form method="post" class="framed">
+    <p>start or join a game</p>
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit"/>
+    <input class="button" type="submit" value="go"/>
   </form>
 {% endblock %}
