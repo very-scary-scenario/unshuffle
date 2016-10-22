@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, FormView
 
-from .forms import GameForm, JoinGameForm, ConfigureGameForm
+from .forms import GameForm, JoinGameForm, ConfigureGameForm, SOURCE_SEP
 from .models import Game as GameStore
 from ..game import reg, Game, Player
 from ..sources import SOURCES
@@ -88,8 +88,9 @@ class ConfigureGameView(GameMixin, FormView):
     success_url = '.'
 
     def form_valid(self, form):
+        category, deck = form.cleaned_data['deck'].split(SOURCE_SEP, 1)
         self.game.start(
-            SOURCES[form.cleaned_data['deck']],
+            SOURCES[category][deck],
             **{k: form.cleaned_data[k] for k in (
                 'base_hand_size',
                 'initial_river_size',

@@ -3,6 +3,9 @@ from django import forms
 from ..sources import SOURCES
 
 
+SOURCE_SEP = '::'
+
+
 class JoinGameForm(forms.Form):
     your_name = forms.CharField()
     game_name = forms.SlugField()
@@ -11,7 +14,7 @@ class JoinGameForm(forms.Form):
 class ConfigureGameForm(forms.Form):
     deck = forms.ChoiceField(choices=list(sorted(
         (category_name, list(sorted((
-            ('{}::{}'.format(category_name, k), k)
+            ('{}{}{}'.format(category_name, SOURCE_SEP, k), k)
             for k in category.keys()
         )))) for category_name, category in SOURCES.items())
     ))
