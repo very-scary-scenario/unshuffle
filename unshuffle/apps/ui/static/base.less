@@ -26,6 +26,24 @@ body {
   padding: 0 1em;
 }
 
+.messages {
+  margin: 0;
+  padding: 0;
+
+  li {
+    list-style: none;
+    text-align: center;
+    background-color: @lbg;
+    margin: .5em 0;
+    padding: .5em 1em;
+
+    &.error {background-color: hsl(0, 50%, lightness(@lbg))}
+    &.success {background-color: hsl(120, 50%, lightness(@lbg))}
+    &.info {background-color: hsl(200, 50%, lightness(@lbg))}
+    &.warning {background-color: hsl(60, 50%, lightness(@lbg))}
+  }
+}
+
 h1, h2 {
   text-align: center;
 }
