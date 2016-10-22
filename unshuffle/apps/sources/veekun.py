@@ -31,7 +31,7 @@ def _english_pokemon():
             yield mon
 
 
-@source('Veekun: Pokémon by name (alphabetical)')
+@source('Veekun', 'Pokémon by name (alphabetical)')
 def pokemon_by_name():
     for mon in _english_pokemon():
         yield {
@@ -40,7 +40,7 @@ def pokemon_by_name():
         }
 
 
-@source('Veekun: Pokémon by national Pokédex number')
+@source('Veekun', 'Pokémon by national Pokédex number')
 def pokemon_by_national_dex():
     for mon in _english_pokemon():
         yield {
@@ -50,7 +50,7 @@ def pokemon_by_national_dex():
         }
 
 
-@source('Veekun: Pokémon by genus (alphabetical)')
+@source('Veekun', 'Pokémon by genus (alphabetical)')
 def pokemon_by_genus():
     for mon in _english_pokemon():
         yield {

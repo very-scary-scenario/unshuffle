@@ -17,7 +17,7 @@ def wikipedia_soup(article):
     return wikipedia_path_soup('/wiki/{}'.format(article))
 
 
-@source('Wikipedia: Countries by population')
+@source('Wikipedia', 'Countries by population')
 def countries_by_population():
     soup = wikipedia_soup('List_of_countries_and_dependencies_by_population')
 
@@ -32,7 +32,7 @@ def countries_by_population():
         }
 
 
-@source('Wikipedia: Hentai anime by the first sentence of their plot '
+@source('Wikipedia', 'Hentai anime by the first sentence of their plot '
         '(alphabetical, by title)')
 def hentai_by_plot():
     list_soup = wikipedia_soup('List_of_hentai_anime')

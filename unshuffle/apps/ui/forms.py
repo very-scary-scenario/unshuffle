@@ -9,9 +9,12 @@ class JoinGameForm(forms.Form):
 
 
 class ConfigureGameForm(forms.Form):
-    deck = forms.ChoiceField(choices=list(sorted((
-        (k, k) for k in SOURCES.keys()
-    ))))
+    deck = forms.ChoiceField(choices=list(sorted(
+        (category_name, list(sorted((
+            ('{}::{}'.format(category_name, k), k)
+            for k in category.keys()
+        )))) for category_name, category in SOURCES.items())
+    ))
     base_hand_size = forms.IntegerField(
         initial=3, min_value=1, max_value=10,
     )

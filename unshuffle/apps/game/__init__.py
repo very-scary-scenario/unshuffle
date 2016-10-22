@@ -44,6 +44,7 @@ class Game(Loadable):
         self.discard_incorrect_plays = discard_incorrect_plays
 
         self.deck_name = source.deck_name
+        self.deck_category = source.deck_category
         self.deck = list(source())
         self.discard_pile = []
 

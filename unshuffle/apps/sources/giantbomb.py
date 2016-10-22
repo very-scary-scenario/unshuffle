@@ -18,10 +18,10 @@ except AttributeError:
 LIMIT = 100
 
 
-def source(name):
+def source(*a):
     if GIANTBOMB_API_KEY is None:
         return lambda f: None
-    return _source(name)
+    return _source(*a)
 
 
 def giantbomb(method, **params):
@@ -74,7 +74,7 @@ def build_deck(field):
             }
 
 
-@source('Giant Bomb: Games by original release date')
+@source('Giant Bomb', 'Games by original release date')
 def games_by_release_date():
     for card in build_deck('original_release_date'):
         yield {

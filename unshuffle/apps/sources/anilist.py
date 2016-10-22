@@ -57,7 +57,7 @@ def anime_description(anime):
     ))
 
 
-@source('Anilist: Anime by season')
+@source('Anilist', 'Anime by season')
 @cached('anilist_seasons')
 def anime_by_season():
     for year in range(1995, datetime.now().year):
@@ -78,7 +78,7 @@ def anime_by_season():
                 }
 
 
-@source('Anilist: Anime by user rating')
+@source('Anilist', 'Anime by user rating')
 @cached('anilist_ratings')
 def anime_by_user_rating():
     seen = set()
