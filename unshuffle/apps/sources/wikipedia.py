@@ -30,37 +30,3 @@ def countries_by_population():
             'order': int(population.replace(',', '')),
             'order_display': population,
         }
-
-
-@source('Wikipedia', 'Hentai anime by the first sentence of their plot '
-        '(alphabetical, by title)')
-def hentai_by_plot():
-    list_soup = wikipedia_soup('List_of_hentai_anime')
-
-    for anchor in list_soup.select(
-        '#mw-content-text > ul > li > i > a[title]'
-    ):
-        title = anchor.get_text()
-        soup = wikipedia_path_soup(anchor['href'])
-        plot_titles = soup.select('#Plot, #Story')
-
-        if not plot_titles:
-            continue
-
-        element = plot_titles[0].parent
-
-        while element is not None and element.name != 'p':
-            element = element.next_sibling
-
-        if element is None:
-            continue
-
-        for undesired in element.select('sup'):
-            undesired.clear()
-
-        plot = truncatechars(element.get_text().replace(title, '[title]'), 140)
-
-        yield {
-            'description': plot,
-            'order': title,
-        }
