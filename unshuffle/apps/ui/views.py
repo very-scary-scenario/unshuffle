@@ -21,6 +21,7 @@ class StartGameView(FormView):
 
     def form_valid(self, form):
         if form.cleaned_data['room_code']:
+            room = form.cleaned_data['room_code']
             game_store = form.cleaned_data['room_code'].game_set.latest()
         else:
             room = Room.create_new()
