@@ -1,5 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
 
+from .models import Room
 from ..sources import SOURCES
 
 
@@ -7,8 +9,19 @@ SOURCE_SEP = '::'
 
 
 class JoinGameForm(forms.Form):
-    your_name = forms.CharField()
-    game_name = forms.SlugField()
+    your_name = forms.CharField(required=True)
+    room_code = forms.SlugField(help_text="Leave blank to start a new game",
+                                required=False)
+
+    def clean_room_code(self):
+        if self.data['room_code']:
+            try:
+                return Room.objects.recently_active().get(
+                    code=self.data['room_code'])
+            except Room.DoesNotExist:
+                raise ValidationError('No room found with that code')
+        else:
+            return ''
 
 
 class ConfigureGameForm(forms.Form):

@@ -2,9 +2,8 @@
 
 {% block content %}
   <form method="post" class="framed">
-    <p>start or join a game</p>
     {% csrf_token %}
     {{ form.as_p }}
-    <input class="button" type="submit" value="go"/>
+    <input class="button" type="submit" value="play"/>
   </form>
 {% endblock %}

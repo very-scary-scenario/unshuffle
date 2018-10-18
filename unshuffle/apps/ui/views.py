@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, FormView
 
 from .forms import GameForm, JoinGameForm, ConfigureGameForm, SOURCE_SEP
-from .models import Game as GameStore
+from .models import Room
 from ..game import reg, Game, Player
 from ..sources import SOURCES
 
@@ -20,9 +20,12 @@ class StartGameView(FormView):
     form_class = JoinGameForm
 
     def form_valid(self, form):
-        game_store, created = GameStore.objects.get_or_create(
-            name=form.cleaned_data['game_name'],
-        )
+        if form.cleaned_data['room_code']:
+            room = form.cleaned_data['room_code']
+            game_store = form.cleaned_data['room_code'].game_set.latest()
+        else:
+            room = Room.create_new()
+            game_store = room.game_set.create()
 
         game = camel.load(game_store.state) or Game(players=[])
 
@@ -41,17 +44,17 @@ class StartGameView(FormView):
             game_store.state = camel.dump(game)
             game_store.save()
 
-        self.request.session[game_store.name] = (
+        self.request.session[room.code] = (
             form.cleaned_data['your_name']
         )
 
-        return redirect(game_store.get_absolute_url())
+        return redirect(room.get_absolute_url())
 
 
 class GameMixin(object):
     @reify
     def player_name(self):
-        return self.request.session.get(self.game._store.name, None)
+        return self.request.session.get(self.game._store.room.code, None)
 
     @reify
     def player(self):
@@ -68,7 +71,9 @@ class GameMixin(object):
 
     @reify
     def game(self):
-        game_store = get_object_or_404(GameStore, name=self.kwargs['name'])
+        room = get_object_or_404(Room.objects.recently_active(),
+                                 code=self.kwargs['code'])
+        game_store = room.game_set.latest()
         game = camel.load(game_store.state)
         game._store = game_store
         return game
@@ -78,7 +83,7 @@ class GameMixin(object):
             **super().get_context_data(*a, **k),
             'game': self.game,
             'player': self.player,
-            'game_name': self.kwargs['name'],
+            'room_code': self.kwargs['code'],
         }
 
 
@@ -127,6 +132,15 @@ class GameView(GameMixin, FormView):
         form.game = self.game
         form.player = self.player
         return form
+
+    def form_invalid(self, form):
+        if self.game.is_over():
+            self.game._store.room.game_set.create(
+                state=camel.dump(Game(players=self.game.players))
+            )
+            return redirect('.')
+
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         if self.game.play(

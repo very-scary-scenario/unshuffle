@@ -98,6 +98,11 @@ class Game(Loadable):
 
         return correct
 
+    def is_over(self):
+        return not any((
+            p.hand for p in self.players
+        ))
+
     def save(self):
         pass
 
