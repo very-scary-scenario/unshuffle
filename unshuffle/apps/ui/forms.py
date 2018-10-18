@@ -7,8 +7,14 @@ SOURCE_SEP = '::'
 
 
 class JoinGameForm(forms.Form):
-    your_name = forms.CharField()
-    game_name = forms.SlugField()
+    your_name = forms.CharField(required=True)
+    room_code = forms.SlugField(help_text="Leave blank to start a new game",
+                                required=False)
+
+    def clea_room_code(self, data):
+        raise NotImplementedError(
+            'we need to check to make sure this room exists, and return it'
+        )
 
 
 class ConfigureGameForm(forms.Form):

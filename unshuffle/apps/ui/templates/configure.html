@@ -2,8 +2,8 @@
 
 {% block content %}
   <form method="post" class="framed">
-    <p>configure the game, and hit go when everyone's joined</p>
-    <p>to have someone join, tell them that the name of your game is <code>{{ game_name }}</code> and send them to this website</p>
+    <p><strong>room code: <code>{{ room_code }}</code></strong></p>
+    <p>to have someone join, send them to unshuffle.vscary.co</p>
     <p>if you want to play solo, just pick your settings and hit go</p>
 
     {% csrf_token %}
