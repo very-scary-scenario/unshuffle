@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from django.template.defaultfilters import truncatechars
 import requests
 
-from ..sources import source
+from ..sources import source, cached
 
 
 def wikipedia_path_soup(path):
@@ -15,6 +15,29 @@ def wikipedia_path_soup(path):
 
 def wikipedia_soup(article):
     return wikipedia_path_soup('/wiki/{}'.format(article))
+
+
+def _country_mcdonalds():
+    soup = wikipedia_soup('List_of_countries_with_McDonald%27s_restaurants')
+
+    current_table = soup.select('.wikitable')[0]
+    for row in current_table.select('tr'):
+        cells = row.select('td')
+        if not cells:
+            continue
+        country, date, first, count, source, people_per_outlet, ref = (
+            element.get_text() for element in cells
+        )
+
+        if not count.strip():
+            continue
+
+        yield (
+            re.sub(r'\(.*\)', '', country).strip(' \n\xa0'),
+            int(re.sub(r'(\[\d+\]|,|\+)', '', count)),
+            int(re.sub(r'(\[\d+\]|,)', '', people_per_outlet)),
+        )
+
 
 
 @source('Wikipedia', 'Countries by population')
@@ -29,6 +52,27 @@ def countries_by_population():
             'title': re.sub(r'\[[^\[]+\]', '', country),
             'order': int(population.replace(',', '')),
             'order_display': population,
+        }
+
+
+@source('Wikipedia', "Countries by number of McDonald's outlets")
+def countries_by_mcdonalds():
+    for country, count, people_per_outlet in _country_mcdonalds():
+        yield {
+            'title': country,
+            'order': count,
+            'order_display': '{:,} outlets'.format(count),
+        }
+
+
+@source('Wikipedia', "Countries by number of McDonald's outlets per person")
+def countries_by_mcdonalds_per_person():
+    for country, count, people_per_outlet in _country_mcdonalds():
+        yield {
+            'title': country,
+            'order': 1/people_per_outlet,
+            'order_display': 'one outlet for every {:,} people'
+            .format(people_per_outlet),
         }
 
 
