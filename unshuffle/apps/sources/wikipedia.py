@@ -1,16 +1,28 @@
 import re
 
 from bs4 import BeautifulSoup
-from django.template.defaultfilters import truncatechars
+from django.core.cache import cache
 import requests
 
-from ..sources import source, cached
+from ..sources import source
+
+
+def _get_article(path):
+    path = path.lstrip('/')
+    ck = 'wikipedia:{}'.format(path)
+    hit = cache.get(ck)
+
+    if hit is not None:
+        return hit
+    else:
+        resp = requests.get('https://en.wikipedia.org/{}'.format(path))
+        resp.raise_for_status()
+        cache.set(ck, resp.content)
+        return resp.content
 
 
 def wikipedia_path_soup(path):
-    resp = requests.get('https://en.wikipedia.org/{}'.format(path.lstrip('/')))
-    resp.raise_for_status()
-    return BeautifulSoup(resp.content, 'lxml')
+    return BeautifulSoup(_get_article(path), 'lxml')
 
 
 def wikipedia_soup(article):
