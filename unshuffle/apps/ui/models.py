@@ -24,7 +24,9 @@ class Room(models.Model):
     @classmethod
     def create_new(cls):
         for attempt in range(20):
-            random_string = ''.join((choice(ascii_lowercase) for i in range(4)))
+            random_string = ''.join(
+                (choice(ascii_lowercase) for i in range(4))
+            )
             # probably want to reject slurs and swears and stuff
             if not Room.objects.all().recently_active().filter(
                     code=random_string).exists():

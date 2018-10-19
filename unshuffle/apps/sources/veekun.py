@@ -49,7 +49,7 @@ def _english_pokemon():
 
 
 @source('Veekun', 'Pokémon by total of all base stats')
-def pokemon_by_genus():
+def pokemon_by_base_stat_total():
     total_base_stats = _total_base_stats()
     for mon in _english_pokemon():
         yield {

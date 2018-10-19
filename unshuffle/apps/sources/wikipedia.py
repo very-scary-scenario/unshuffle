@@ -51,7 +51,6 @@ def _country_mcdonalds():
         )
 
 
-
 @source('Wikipedia', 'Countries by population')
 def countries_by_population():
     soup = wikipedia_soup('List_of_countries_and_dependencies_by_population')
@@ -89,7 +88,7 @@ def countries_by_mcdonalds_per_person():
 
 
 @source('Wikipedia', 'Languages by number of speakers')
-def countries_by_population():
+def languages_by_speakers():
     soup = wikipedia_soup('List_of_languages_by_number_of_native_speakers')
 
     for row in soup.select('.wikitable tr')[1:]:
