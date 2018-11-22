@@ -31,6 +31,7 @@ def source(category, name):
 from ..sources import (  # noqa
     anilist,
     giantbomb,
+    notifiable_offences,
     veekun,
     wikipedia,
 )
