@@ -5,6 +5,10 @@ import re
 from ..sources import source
 
 
+def _pluralise(fmt, number):
+    return fmt.format(number, '' if number == 1 else 's')
+
+
 def _parse():
     in_content = False
 
@@ -57,11 +61,11 @@ def offences_by_maximum_sentence():
         elif re.match(r'\d+m', msd_proc):
             months = int(msd_proc[:-1])
             max_sentence = months / 12
-            max_sentence_display = '{} months'.format(months)
+            max_sentence_display = _pluralise('{} month{}', months)
 
         else:
             max_sentence = int(msd_proc)
-            max_sentence_display = '{} years'.format(max_sentence)
+            max_sentence_display = _pluralise('{} year{}', max_sentence)
 
         category_display = re.sub(r'^\d+[A-Z]? ', '', category.strip())
 
