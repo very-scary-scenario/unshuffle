@@ -37,7 +37,7 @@ class ConfigureGameForm(forms.Form):
     initial_river_size = forms.IntegerField(
         initial=1, min_value=1, max_value=10,
     )
-    discard_incorrect_plays = forms.BooleanField(initial=True)
+    discard_incorrect_plays = forms.BooleanField(initial=True, required=False)
 
 
 class GameForm(forms.Form):
