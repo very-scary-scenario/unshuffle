@@ -44,6 +44,9 @@ def _country_mcdonalds():
         if not count.strip():
             continue
 
+        if not people_per_outlet.strip():
+            continue
+
         yield (
             re.sub(r'\(.*\)', '', country).strip(' \n\xa0'),
             int(re.sub(r'(\[\d+\]|,|\+)', '', count)),
