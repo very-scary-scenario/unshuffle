@@ -1,3 +1,5 @@
+import random
+
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -24,13 +26,21 @@ class JoinGameForm(forms.Form):
             return ''
 
 
+_source_choices = list(sorted(
+    (category_name, list(sorted((
+        ('{}{}{}'.format(category_name, SOURCE_SEP, k), k)
+        for k in category.keys()
+    )))) for category_name, category in SOURCES.items())
+)
+
+
 class ConfigureGameForm(forms.Form):
-    deck = forms.ChoiceField(choices=list(sorted(
-        (category_name, list(sorted((
-            ('{}{}{}'.format(category_name, SOURCE_SEP, k), k)
-            for k in category.keys()
-        )))) for category_name, category in SOURCES.items())
-    ))
+    deck = forms.ChoiceField(
+        choices=_source_choices,
+        initial=lambda: random.choice([
+            ch[0] for cat in _source_choices for ch in cat[1]
+        ]),
+    )
     base_hand_size = forms.IntegerField(
         initial=3, min_value=1, max_value=10,
     )
