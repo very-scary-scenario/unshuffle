@@ -5,15 +5,19 @@ import os
 from ..sources import source
 
 
-ENTRIES = list(DictReader(open(os.path.join(
-    os.path.dirname(__file__), 'data',
-    'Average-prices-Property-Type-2018-09.csv',
-))))
-MAX_DATE = max((e['Date'] for e in ENTRIES))
+def _parse():
+    with open(os.path.join(
+        os.path.dirname(__file__), 'data',
+        'Average-prices-Property-Type-2018-09.csv',
+    )) as f:
+        yield from DictReader(f)
+
+
+MAX_DATE = max((e['Date'] for e in _parse()))
 
 
 def _build_deck(condition, description_formatter):
-    for entry in ENTRIES:
+    for entry in _parse():
         if not condition(entry):
             continue
 
