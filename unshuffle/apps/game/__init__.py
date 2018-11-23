@@ -5,6 +5,9 @@ from camel import CamelRegistry
 reg = CamelRegistry()
 
 
+MAX_DECK_SIZE = 400
+
+
 class Loadable(object):
     def __init__(self, **attrs):
         super().__init__()
@@ -49,6 +52,7 @@ class Game(Loadable):
         self.discard_pile = []
 
         shuffle(self.deck)
+        self.deck = self.deck[:MAX_DECK_SIZE]
 
         self.players = players or self.players or None
 
