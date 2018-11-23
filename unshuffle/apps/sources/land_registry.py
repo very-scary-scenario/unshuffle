@@ -43,7 +43,7 @@ def house_type_and_region_by_average_price():
 @source('HM Land Registry', 'House type in UK regions in a given month by '
         'average price')
 def house_type_and_region_and_month_by_average_price():
-    yield from _build_deck(lambda e: True, lambda e: '{} in {}'.format(
+    yield from _build_deck(lambda e: True, lambda e: '{}, {}'.format(
         e['Region_Name'],
         date(*(int(c) for c in e['Date'].split('-')))
         .strftime('%B %Y')
