@@ -30,7 +30,7 @@ ENTRIES = list(_parse())
 
 
 @source(
-    'data.gov.uk', 'Offences by maximum sentence (cw: specific descriptions '
+    'Home Office', 'Offences by maximum sentence (cw: specific descriptions '
     'of assault)',
 )
 def offences_by_maximum_sentence():
