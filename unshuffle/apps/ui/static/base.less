@@ -45,6 +45,9 @@ body {
 }
 
 .framed {
+  margin: 0 auto;
+  max-width: 35em;
+
   padding: 0 1em;
   position: relative;
 
@@ -52,9 +55,22 @@ body {
     font-size: 1.1em;
     max-width: 100%;
 
-    &[type=text] {
-      display: block;
+    &[type=text], &[type=number] {
+      border-radius: .2em;
+      padding: .2em;
+      border: none;
     }
+  }
+
+  input&[type=text], select {
+    display: block;
+    margin: .3em 0;
+  }
+
+  .helptext {
+    display: block;
+    margin: .3em 1em;
+    padding-bottom: .5em;
   }
 
   code {

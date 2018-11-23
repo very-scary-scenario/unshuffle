@@ -40,14 +40,28 @@ class ConfigureGameForm(forms.Form):
         initial=lambda: random.choice([
             ch[0] for cat in _source_choices for ch in cat[1]
         ]),
+        help_text=(
+            "The things you're going to have to sort, and the order you're "
+            "going to have to sort them into."
+        )
     )
     base_hand_size = forms.IntegerField(
-        initial=3, min_value=1, max_value=10,
+        initial=3, min_value=1, max_value=10, help_text=(
+            'The number of cards to deal to each player at the start of the '
+            'game.'
+        ),
     )
     initial_river_size = forms.IntegerField(
-        initial=1, min_value=1, max_value=10,
+        initial=1, min_value=1, max_value=10, help_text=(
+            'The number of cards revealed at the start of the game.'
+        )
     )
-    discard_incorrect_plays = forms.BooleanField(initial=True, required=False)
+    discard_incorrect_plays = forms.BooleanField(
+        initial=True, required=False, help_text=(
+            'If unchecked, incorrect plays will be sent to their correct '
+            'place in the river rather than being discarded.'
+        ),
+    )
 
 
 class GameForm(forms.Form):

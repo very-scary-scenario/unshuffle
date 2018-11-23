@@ -24,7 +24,9 @@
         {% endfor %}
       </div>
     {% elif not player %}
-      <p>you are spectating</p>
+      <div class="framed">
+        <p>you are spectating</p>
+      </div>
     {% endif %}
 
     <h2>
@@ -63,7 +65,7 @@
     {% if player and player.hand %}
       <input class="button" id="play-button" type="submit" value="and play it"/>
     {% elif player and game.is_over %}
-      <input class="button" id="play-button" type="submit" value="start a new game"/>
+      <input class="button" id="play-button" type="submit" value="new game!"/>
     {% endif %}
   </form>
 
