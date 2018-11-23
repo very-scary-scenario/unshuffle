@@ -127,6 +127,14 @@ PIPELINE = {
             'output_filename': 'base.css',
         }
     },
+    'JAVASCRIPT': {
+        'base': {
+            'source_filenames': (
+                'base.js',
+            ),
+            'output_filename': 'base.js',
+        }
+    },
     'COMPILERS': (
         'pipeline.compilers.less.LessCompiler',
     ),
