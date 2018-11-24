@@ -152,7 +152,7 @@ def restaurant_chains_by_count():
         }
 
 
-@source('Wikipedia', 'Countries by electricity consumption per capita')
+@source('Wikipedia', 'Countries by electricity consumption per person')
 def countries_by_energy_consumption_per_capita():
     soup = wikipedia_soup('List_of_countries_by_electricity_consumption')
 
