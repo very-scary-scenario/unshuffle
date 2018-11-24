@@ -125,3 +125,27 @@ def elements_by_atomic_number():
             'title': '{} ({})'.format(name, symbol),
             'order': int(number),
         }
+
+
+@source('Wikipedia', 'Restaurant chains by number of locations worldwide')
+def restaurant_chains_by_count():
+    soup = wikipedia_soup('List_of_restaurant_chains')
+
+    for row in soup.select('.wikitable tr')[1:]:
+        if row.select('th'):
+            continue
+
+        name, _, _, _, _, count_text, *_ = (
+            element.get_text() for element in row.select('td')
+        )
+
+        try:
+            count = int(count_text.replace(',', ''))
+        except ValueError:
+            continue
+
+        yield {
+            'title': name,
+            'order': count,
+            'order_display': '{:,}'.format(count),
+        }
