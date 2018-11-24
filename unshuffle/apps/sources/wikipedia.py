@@ -107,3 +107,21 @@ def languages_by_speakers():
             'order': millions_count,
             'order_display': '{} million'.format(millions_string),
         }
+
+
+@source('Wikipedia', 'Elements by atomic number')
+def elements_by_atomic_number():
+    soup = wikipedia_soup('List_of_chemical_elements')
+
+    for row in soup.select('.wikitable tr')[1:]:
+        if row.select('th') or len(row.select('td')) < 10:
+            continue
+
+        number, symbol, name, *_ = (
+            element.get_text() for element in row.select('td')
+        )
+
+        yield {
+            'title': '{} ({})'.format(name, symbol),
+            'order': int(number),
+        }
