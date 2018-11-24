@@ -94,9 +94,10 @@ def countries_by_mcdonalds_per_person():
 def languages_by_speakers():
     soup = wikipedia_soup('List_of_languages_by_number_of_native_speakers')
 
-    for row in soup.select('.wikitable tr')[1:]:
+    for row in soup.select('.wikitable tr'):
         if row.select('th'):
             continue
+
         rank, language, millions, percent = (
             element.get_text() for element in row.select('td')
         )
@@ -113,7 +114,7 @@ def languages_by_speakers():
 def elements_by_atomic_number():
     soup = wikipedia_soup('List_of_chemical_elements')
 
-    for row in soup.select('.wikitable tr')[1:]:
+    for row in soup.select('.wikitable tr'):
         if row.select('th') or len(row.select('td')) < 10:
             continue
 
@@ -131,7 +132,7 @@ def elements_by_atomic_number():
 def restaurant_chains_by_count():
     soup = wikipedia_soup('List_of_restaurant_chains')
 
-    for row in soup.select('.wikitable tr')[1:]:
+    for row in soup.select('.wikitable tr'):
         if row.select('th'):
             continue
 
@@ -148,4 +149,29 @@ def restaurant_chains_by_count():
             'title': name,
             'order': count,
             'order_display': '{:,}'.format(count),
+        }
+
+
+@source('Wikipedia', 'Countries by electricity consumption per capita')
+def countries_by_energy_consumption_per_capita():
+    soup = wikipedia_soup('List_of_countries_by_electricity_consumption')
+
+    for row in soup.select('.wikitable tr'):
+        if row.select('th'):
+            continue
+
+        rank_cell, country_cell, _, _, _, _, _, _, power_cell = (
+            element.get_text() for element in row.select('td')
+        )
+
+        try:
+            power = int(power_cell.replace(',', ''))
+            int(rank_cell)
+        except ValueError:
+            continue
+
+        yield {
+            'title': country_cell.strip(' \n\xa0'),
+            'order': power,
+            'order_display': '{:,} watts per person'.format(power),
         }
