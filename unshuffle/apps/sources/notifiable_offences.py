@@ -57,7 +57,7 @@ def offences_by_maximum_sentence():
             max_sentence = 2.001
             max_sentence_display = '2 years and/or fine'
         elif re.match(r'\d+ weeks', msd_proc):
-            max_sentence = int(msd_proc[:-6]) / 12
+            max_sentence = int(msd_proc[:-6]) / 52
         elif re.match(r'\d+m', msd_proc):
             months = int(msd_proc[:-1])
             max_sentence = months / 12
