@@ -38,7 +38,6 @@ def giantbomb(method, **params):
             'user-agent': 'unshuffle-source-giantbomb/0.0',
         },
     )
-    print(resp.content)
     resp.raise_for_status()
     return resp.json()
 
@@ -47,7 +46,7 @@ def build_deck(field):
     seen_ids = set()
     total = giantbomb('games')['number_of_total_results']
 
-    for i in range(3):
+    for i in range(20):
         for game in giantbomb(
             'games',
             offset=random.randrange(0, total-LIMIT)
@@ -60,7 +59,7 @@ def build_deck(field):
                 # has heard of
                 len(BeautifulSoup(
                     game['description'] or '', 'lxml'
-                ).get_text()) < 1000
+                ).get_text()) < 150
             ):
                 continue
 
@@ -72,6 +71,9 @@ def build_deck(field):
                 )),
                 'order': game[field],
             }
+
+        if len(seen_ids) >= 20:
+            break
 
 
 @source('Giant Bomb', 'Games by original release date', 'Older', 'Newer')
