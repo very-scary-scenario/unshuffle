@@ -74,7 +74,7 @@ def build_deck(field):
             }
 
 
-@source('Giant Bomb', 'Games by original release date')
+@source('Giant Bomb', 'Games by original release date', 'Older', 'Newer')
 def games_by_release_date():
     for card in build_deck('original_release_date'):
         yield {

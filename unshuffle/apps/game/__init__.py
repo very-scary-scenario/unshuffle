@@ -27,8 +27,9 @@ class Loadable(object):
 
 class Game(Loadable):
     persistent_attrs = {
-        'river', 'discard_pile', 'deck_name', 'deck', 'players',
-        'round', 'turn',
+        'deck', 'players',
+        'deck_name', 'deck_category', 'low_extreme', 'high_extreme',
+        'river', 'discard_pile', 'round', 'turn',
         'base_hand_size', 'initial_river_size', 'discard_incorrect_plays',
     }
 
@@ -48,6 +49,8 @@ class Game(Loadable):
 
         self.deck_name = source.deck_name
         self.deck_category = source.deck_category
+        self.low_extreme = source.low_extreme
+        self.high_extreme = source.high_extreme
         self.deck = list(source())
         self.discard_pile = []
 

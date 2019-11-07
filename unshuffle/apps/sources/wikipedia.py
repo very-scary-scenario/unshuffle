@@ -54,7 +54,7 @@ def _country_mcdonalds():
         )
 
 
-@source('Wikipedia', 'Countries by population')
+@source('Wikipedia', 'Countries by population', 'Fewer people', 'More people')
 def countries_by_population():
     soup = wikipedia_soup('List_of_countries_and_dependencies_by_population')
 
@@ -69,7 +69,8 @@ def countries_by_population():
         }
 
 
-@source('Wikipedia', "Countries by number of McDonald's outlets")
+@source('Wikipedia', "Countries by number of McDonald's outlets",
+        "Fewer McDonald's", "More McDonald's")
 def countries_by_mcdonalds():
     for country, count, people_per_outlet in _country_mcdonalds():
         yield {
@@ -79,7 +80,10 @@ def countries_by_mcdonalds():
         }
 
 
-@source('Wikipedia', "Countries by number of McDonald's outlets per person")
+@source(
+    'Wikipedia', "Countries by number of McDonald's outlets per person",
+    "Fewer McDonald's per person", "More McDonald's per person",
+)
 def countries_by_mcdonalds_per_person():
     for country, count, people_per_outlet in _country_mcdonalds():
         yield {
@@ -90,7 +94,8 @@ def countries_by_mcdonalds_per_person():
         }
 
 
-@source('Wikipedia', 'Languages by number of speakers')
+@source('Wikipedia', 'Languages by number of speakers',
+        'Fewer speakers', 'More speakers')
 def languages_by_speakers():
     soup = wikipedia_soup('List_of_languages_by_number_of_native_speakers')
 
@@ -110,7 +115,7 @@ def languages_by_speakers():
         }
 
 
-@source('Wikipedia', 'Elements by atomic number')
+@source('Wikipedia', 'Elements by atomic number', 'Lower', 'Higher')
 def elements_by_atomic_number():
     soup = wikipedia_soup('List_of_chemical_elements')
 
@@ -128,7 +133,8 @@ def elements_by_atomic_number():
         }
 
 
-@source('Wikipedia', 'Restaurant chains by number of locations worldwide')
+@source('Wikipedia', 'Restaurant chains by number of locations worldwide',
+        'Fewer locations', 'More locations')
 def restaurant_chains_by_count():
     soup = wikipedia_soup('List_of_restaurant_chains')
 
@@ -152,7 +158,8 @@ def restaurant_chains_by_count():
         }
 
 
-@source('Wikipedia', 'Countries by electricity consumption per person')
+@source('Wikipedia', 'Countries by electricity consumption per person',
+        'Lower consumption', 'Higher consumption')
 def countries_by_energy_consumption_per_capita():
     soup = wikipedia_soup('List_of_countries_by_electricity_consumption')
 

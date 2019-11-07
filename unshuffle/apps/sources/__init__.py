@@ -18,10 +18,12 @@ def cached(cache_key):
     return wrapper
 
 
-def source(category, name):
+def source(category, name, low_extreme, high_extreme):
     def _register_source(func):
         func.deck_category = category
         func.deck_name = name
+        func.low_extreme = low_extreme
+        func.high_extreme = high_extreme
         SOURCES.setdefault(category, {})[name] = func
         return func
 

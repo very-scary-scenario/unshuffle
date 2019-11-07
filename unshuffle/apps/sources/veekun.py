@@ -48,7 +48,7 @@ def _english_pokemon():
             yield mon
 
 
-@source('Veekun', 'Pokémon by total of all base stats')
+@source('Veekun', 'Pokémon by total of all base stats', 'Lower', 'Higher')
 def pokemon_by_base_stat_total():
     total_base_stats = _total_base_stats()
     for mon in _english_pokemon():
@@ -58,7 +58,7 @@ def pokemon_by_base_stat_total():
         }
 
 
-@source('Veekun', 'Pokémon by national Pokédex number')
+@source('Veekun', 'Pokémon by national Pokédex number', 'Lower', 'Higher')
 def pokemon_by_national_dex():
     for mon in _english_pokemon():
         yield {
@@ -68,7 +68,7 @@ def pokemon_by_national_dex():
         }
 
 
-@source('Veekun', 'Pokémon by genus (alphabetical)')
+@source('Veekun', 'Pokémon by genus (alphabetical)', 'A', 'Z')
 def pokemon_by_genus():
     for mon in _english_pokemon():
         yield {

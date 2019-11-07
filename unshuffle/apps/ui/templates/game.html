@@ -60,6 +60,11 @@
           {% endif %}
         </div>
       {% endfor %}
+
+      <div id="river-extremes">
+        <span class="extreme low-extreme">{{ game.low_extreme }}</span> |
+        <span class="extreme high-extreme">{{ game.high_extreme }}</span>
+      </div>
     </div>
 
     {% if player and player.hand %}

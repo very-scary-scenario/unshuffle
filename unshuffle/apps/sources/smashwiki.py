@@ -30,7 +30,7 @@ def smashwiki_soup(article):
     return soup.find(id='bodyContent')
 
 
-@source('SmashWiki', 'Fighters by weight (SSBU)')
+@source('SmashWiki', 'Fighters by weight (SSBU)', 'Lighter', 'Heavier')
 def weight():
     tables = smashwiki_soup('Weight').find_all(class_='wikitable')
     table, = (t for t in tables if t.find(title='Jigglypuff (SSBU)'))
@@ -42,7 +42,7 @@ def weight():
         }
 
 
-@source('SmashWiki', 'Fighters by gravity (SSBU)')
+@source('SmashWiki', 'Fighters by gravity (SSBU)', 'Lower', 'Higher')
 def gravity():
     tables = smashwiki_soup('Gravity').find_all(class_='wikitable')
     table, = (t for t in tables if t.find(title='Jigglypuff (SSBU)'))
@@ -54,7 +54,7 @@ def gravity():
         }
 
 
-@source('SmashWiki', 'Fighters by run speed (SSBU)')
+@source('SmashWiki', 'Fighters by run speed (SSBU)', 'Slower', 'Faster')
 def run_speed():
     tables = smashwiki_soup('Dash').find_all(class_='wikitable')
     table, = (t for t in tables if t.find(title='Jigglypuff (SSBU)'))
@@ -68,7 +68,7 @@ def run_speed():
         }
 
 
-@source('SmashWiki', 'Fighters by walk speed (SSBU)')
+@source('SmashWiki', 'Fighters by walk speed (SSBU)', 'Slower', 'Faster')
 def walk_speed():
     tables = smashwiki_soup('Walk').find_all(class_='wikitable')
     table, = (t for t in tables if t.find(title='Jigglypuff (SSBU)'))
