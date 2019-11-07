@@ -33,6 +33,7 @@ from ..sources import (  # noqa
     giantbomb,
     land_registry,
     notifiable_offences,
+    smashwiki,
     veekun,
     wikipedia,
 )
