@@ -111,6 +111,16 @@ h2 {
   .choice-group {
     display: inline;
   }
+
+  #river-extremes {
+    margin: 0 0 1em;
+    font-size: 1.2em;
+    color: fade(@text, 20);
+
+    .extreme { margin: 0 .2em; color: @text }
+    .low-extreme::before { content: '‹ ' }
+    .high-extreme::after { content: ' ›' }
+  }
 }
 
 .card-spacing {
