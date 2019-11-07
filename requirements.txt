@@ -1,6 +1,6 @@
 beautifulsoup4
 lxml
-django==1.11.26
+django==2.2.7
 classtools==0.1
 camel==0.1
 django-pipeline==1.6.9
