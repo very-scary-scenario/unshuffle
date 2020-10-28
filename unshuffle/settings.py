@@ -133,7 +133,19 @@ PIPELINE = {
                 'base.js',
             ),
             'output_filename': 'base.js',
-        }
+        },
+        'game': {
+            'source_filenames': (
+                'angular/polyfills.js',
+                'angular/runtime.js',
+                'angular/vendor.js',
+                'angular/main.js',
+            ),
+            'extra_context': {
+                'defer': True,
+            },
+            'output_filename': 'game.js',
+        },
     },
     'COMPILERS': (
         'pipeline.compilers.less.LessCompiler',

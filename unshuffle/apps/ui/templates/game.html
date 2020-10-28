@@ -1,96 +1,16 @@
 {% extends "base.html" %}
+{% load pipeline static %}
 
 {% block heading %}
   <h1>{{ game.deck_name }}</h1>
 {% endblock %}
 
+{% block scripts %}
+  {% javascript "game" %}
+{% endblock %}
+
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
-
-    {% if player and player.hand %}
-      <h2>pick a card from your hand</h2>
-      <div class="hand">
-        {% for card in player.hand %}
-          <div class="choice-group">
-            <input id="card-{{ forloop.counter0 }}" type="radio" name="card" value="{{ forloop.counter0 }}"/>
-            <label for="card-{{ forloop.counter0 }}">
-              <div class="card">
-                {% if card.title %}<h3>{{ card.title }}</h3>{% endif %}
-                {% if card.description %}{{ card.description|linebreaks }}{% endif %}
-              </div>
-            </label>
-          </div>
-        {% endfor %}
-      </div>
-    {% elif not player %}
-      <div class="framed">
-        <p>you are spectating</p>
-      </div>
-    {% endif %}
-
-    <h2>
-      {% if player and player.hand %}
-        choose where you think it belongs
-      {% else %}
-        river
-      {% endif %}
-    </h2>
-
-    <div class="river">
-      <div class="choice-group">
-        {% if player %}
-          <input type="radio" name="index" value="0" id="slot-0">
-          <label for="slot-0"></label>
-        {% endif %}
-      </div>
-
-      {% for card in game.river %}
-        <div class="choice-group">
-          <div class="card">
-            {% if card.title %}<h3>{{ card.title }}</h3>{% endif %}
-            <p><em>{% firstof card.order_display card.order %}</em></p>
-            {% if card.description %}{{ card.description|linebreaks }}{% endif %}
-            {% if card.secret_description %}{{ card.secret_description|linebreaks }}{% endif %}
-          </div>
-
-          {% if player %}
-            <input type="radio" name="index" value="{{ forloop.counter }}" id="slot-{{ forloop.counter }}"/>
-            <label for="slot-{{ forloop.counter }}"></label>
-          {% endif %}
-        </div>
-      {% endfor %}
-
-      <div id="river-extremes">
-        <span class="extreme low-extreme">{{ game.low_extreme }}</span> |
-        <span class="extreme high-extreme">{{ game.high_extreme }}</span>
-      </div>
-    </div>
-
-    {% if player and player.hand %}
-      <input class="button" id="play-button" type="submit" value="and play it"/>
-    {% elif player and game.is_over %}
-      <input class="button" id="play-button" type="submit" value="new game!"/>
-    {% endif %}
-  </form>
-
-  <ul class="state">
-    {% for player in game.players %}
-      <li><strong>{{ player.name }}</strong> has {{ player.hand|length }} cards</li>
-    {% endfor %}
-  </ul>
-
-  {% if game.discard_pile %}
-    <h2>discard pile</h2>
-    <div class="discard-pile">
-      {% for card in game.discard_pile reversed %}
-        <div class="card">
-          {% if card.title %}<h3>{{ card.title }}</h3>{% endif %}
-          <p><em>{% firstof card.order_display card.order %}</em></p>
-          {% if card.description %}{{ card.description|linebreaks }}{% endif %}
-          {% if card.secret_description %}{{ card.secret_description|linebreaks }}{% endif %}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+  {% verbatim %}
+    <app-root></app-root>
+  {% endverbatim %}
 {% endblock %}
