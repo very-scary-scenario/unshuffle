@@ -2,8 +2,8 @@ from camel import Camel
 from classtools import reify
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView, FormView
 
 from .forms import GameForm, JoinGameForm, ConfigureGameForm, SOURCE_SEP

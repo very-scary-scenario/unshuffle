@@ -2,8 +2,8 @@ import datetime
 from random import choice
 from string import ascii_lowercase
 
-from django.core.urlresolvers import reverse
 from django.db import models
+from django.urls import reverse
 from django.utils.timezone import now
 
 
@@ -36,7 +36,7 @@ class Room(models.Model):
 
 
 class Game(models.Model):
-    room = models.ForeignKey(Room)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     state = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)
 
