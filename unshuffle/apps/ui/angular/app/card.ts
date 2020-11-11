@@ -1,8 +1,8 @@
 export interface Card {
-  id: number;
+  id?: number;
   title: string;
-  order: string;
-  order_display: string;
-  description: string;
-  secret_description: string;
+  order: number;
+  order_display?: string;
+  description?: string;
+  secret_description?: string;
 }
