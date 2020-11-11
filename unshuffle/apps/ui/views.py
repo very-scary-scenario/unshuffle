@@ -1,10 +1,12 @@
+import json
+
 from camel import Camel
 from classtools import reify
-
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, View
 
 from .forms import GameForm, JoinGameForm, ConfigureGameForm, SOURCE_SEP
 from .models import Room
@@ -108,6 +110,16 @@ class ConfigureGameView(GameMixin, FormView):
 
 class AwaitView(GameMixin, TemplateView):
     template_name = 'await.html'
+
+
+class GameStateView(GameMixin, View):
+    def get(self, *args, **kwargs):
+        dumpable_game = self.game.dump()
+        dumpable_game['players'] = [p.dump() for p in dumpable_game['players']]
+        return HttpResponse(
+            json.dumps(dumpable_game),
+            content_type="application/json",
+        )
 
 
 class GameView(GameMixin, FormView):
