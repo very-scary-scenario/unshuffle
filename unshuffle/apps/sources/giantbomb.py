@@ -1,3 +1,4 @@
+from typing import Optional
 import random
 
 from bs4 import BeautifulSoup
@@ -7,6 +8,8 @@ import requests
 from django.conf import settings
 
 from ..sources import source as _source
+
+GIANTBOMB_API_KEY: Optional[str]
 
 try:
     GIANTBOMB_API_KEY = settings.GIANTBOMB_API_KEY

@@ -1,4 +1,7 @@
 beautifulsoup4
+flake8
+mypy
+django-stubs==1.6.0
 lxml
 django>=3.1<3.2
 classtools==0.1

@@ -1,7 +1,9 @@
+from typing import Callable, Dict, Iterable
+
 from django.core.cache import cache
 
 
-SOURCES = {}
+SOURCES: Dict[str, Dict[str, Callable[[], Iterable[Dict]]]] = {}
 
 
 def cached(cache_key):

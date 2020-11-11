@@ -1,8 +1,6 @@
-from datetime import datetime
+from typing import List, Dict
 
 import requests
-
-from django.conf import settings
 from django.core.cache import cache
 
 from ..sources import source, cached
@@ -10,7 +8,7 @@ from ..sources import source, cached
 
 URL = 'https://graphql.anilist.co'
 SEASONS = ['winter', 'spring', 'summer', 'fall']
-POPULAR_ANIME = []
+POPULAR_ANIME: List[Dict] = []
 
 
 def _popular_anime(*a, **k):
